@@ -6,10 +6,6 @@
 int main() {
 
 	int validateSize;
-	int matrix[15][15];
-	
-	bool validInput = false; 
-
 
 	while (true) {
 		std::cout<<"Enter the size of the magic square: ";
@@ -20,14 +16,15 @@ int main() {
   			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cout << "Input is not a number. Please try again: ";
 			std::cin >> validateSize;
-			continue;
 		} 
 
 		//Checking if input has an appropriate value
 		if (checkInput(validateSize)) {
 			buildMagicSquare(validateSize);
+		} else {
+			continue;
 		}
 
-	}
+	} 
 	return 0;
 }
