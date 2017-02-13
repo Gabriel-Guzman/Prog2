@@ -1,6 +1,15 @@
 #pragma once
 
-void sums(int matrix[15][15], int size) {
+int ** buildMatrix(int size) {
+	int** matrix = new int*[15];
+	for (int i = 0; i < 15; ++i)
+	{
+	   matrix[i] = new int[15];
+	}
+	return matrix;
+}
+
+void sums(int ** matrix, int size) {
 	int sum;
 	std::cout<<"Sums of every row:\t";
 	for (int i = 0; i < size; i++) {
@@ -10,6 +19,7 @@ void sums(int matrix[15][15], int size) {
 		}
 		std::cout<<sum<<"\t";
 	}
+
 	std::cout<<std::endl;
 
 	std::cout<<"Sums of every column: \t";
@@ -35,10 +45,10 @@ void sums(int matrix[15][15], int size) {
 		sum += matrix[i][size - 1 - i];
 	}
 	std::cout<<sum<<"\t";
-	std::cout<<std::endl;
+	std::cout<<std::endl<<std::endl;
 }
 
-void printMagicSquare(int matrix[15][15], int size) {
+void printMagicSquare(int ** matrix, int size) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++)
 		{
@@ -46,6 +56,10 @@ void printMagicSquare(int matrix[15][15], int size) {
 		}
 		std::cout<<std::endl;
 	}
+	std::cout<<std::endl;
+
+	sums(matrix, size);
+
 
 }
 
@@ -60,8 +74,8 @@ bool checkInput(int input) {
 
 	return valid;
 }
-void buildMagicSquare(int size) {
-	int matrix[15][15];
+int ** buildMagicSquare(int size) {
+	int** matrix = buildMatrix(size);
 
 	for (int i = 0 ; i < 15 ; i ++ ) {
 		for ( int j = 0 ; j < 15 ; j++ ) {
@@ -75,7 +89,6 @@ void buildMagicSquare(int size) {
 
 	while(true) {
 		if (matrix[currentX][currentY] != -1) {
-			printMagicSquare(matrix, size);
 			break;
 		}
 
@@ -102,5 +115,42 @@ void buildMagicSquare(int size) {
 		}
 		counter++;
 	}
-	sums(matrix, size);
+	return matrix;
 }
+
+int** horizontalFlip(int ** matrix, int size) {
+
+	int** flipped = buildMatrix(size);
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 15; j++) {
+			flipped[i][j] = -1;
+		}
+	}
+
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			flipped[j][i] = matrix[size - j - 1][i];
+		}
+	}	
+
+	return flipped;
+}
+
+int** verticalFlip(int ** matrix, int size) {
+
+	int** flipped = buildMatrix(size);
+	for (int i = 0; i < 15; i++) {
+		for (int j = 0; j < 15; j++) {
+			flipped[i][j] = -1;
+		}
+	}
+
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			flipped[j][i] = matrix[j][size - i - 1];
+		}
+	}	
+
+	return flipped;
+}
+
