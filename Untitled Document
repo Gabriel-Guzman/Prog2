@@ -1,18 +1,32 @@
 #include<stdio>
 
-class Node{
-	private:
-		typename data;
-		Node * next;
-	public:
-		//Methods and stuff
-}
+//Class has default private member variables and methods
+//Structs have default public
+struct Node{
+	int data;
+	Node * next;
+	Node(int d) {
+		data = d;
+		next = NULL;
+	}
+};
 
 class LinkedList {
-	private:	
-		Node * node;
-	public:
-		//methods and stuff
-}
+	Node *head;
+	LinkedList() {
+		head = NULL;
+	}
+	LinkedList(int x) {
+		head = new Node(x);	
+	}
+};
 
+int main() {
+	Node *a = new Node(1);
+	Node *b = new Node(2);
+	LinkedList *ll = new LinkedList();
+
+	ll->insert(1);
+	ll->insert(2);
+}
 //If you have a segmentation fault, you may have a bad pointer somewhere
