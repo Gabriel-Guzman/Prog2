@@ -1,5 +1,5 @@
 #include <iostream>
-#include "pa2.h"
+#include "Pa2.h"
 #include <string>
 #include <typeinfo>
 
@@ -28,11 +28,10 @@ int main(int argc, char ** argv){
         return 1;
     }
     
-    LinkedList * unused = new LinkedList();
-    LinkedList * used = new LinkedList();
+    LinkedList * memory = new LinkedList();
     
     for(int i = 0; i < 32; i++) {
-        unused->insert(i, i + 1, "");
+        memory->insert(i, i + 1, "");
     }
     
     int validateChoice;
@@ -62,7 +61,7 @@ int main(int argc, char ** argv){
         switch(validateChoice) {
             case 1:
                 std::string name;
-                int size;
+                int size = 0;
                 int pages;
                 std::cout << "Program name - ";
                 //TODO CLEAR BUFFER
@@ -71,7 +70,7 @@ int main(int argc, char ** argv){
                 std::getline (std::cin,name);
                 
                 std::cout << "Program size (KB) - ";
-                
+                std::cin.clear();
                 std::cin >> size;
                 
                 while(std::cin.fail()) {
@@ -88,12 +87,11 @@ int main(int argc, char ** argv){
                     pages = size/4 + 1;
                 }
                 
-                
-                if (used.isRunning(name)){
+                if (memory->isRunning(name)){
                     std::cout<<"Error, Program "<<name<<" is already running."<<std::endl;
                 } else {
-                    unused.sortList();
-                    if(unused.addProgram(used, name, pages)){
+
+                    if(memory->addProgram(name, pages, isBestFit)){
                         std::cout<<"Program "<<name<<" added successfully, "<<pages<<" pages used"<<std::endl;
                     }   else    {
                         std::cout<<"Error, Not enough memory for program"<<name<<std::endl;
@@ -106,6 +104,3 @@ int main(int argc, char ** argv){
     
     return 0;
 }
-
-
-
