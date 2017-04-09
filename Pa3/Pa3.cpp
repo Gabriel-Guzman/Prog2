@@ -4,6 +4,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -21,63 +22,82 @@ int main()
 	ifstream file_input;
 	file_input.open(file_name.c_str());
 
-	string temp;
+	string temp_line;
+	int current_loop_depth;
+	int max_loop_depth;
 	vector<string> keywords;
 	vector<string> errors;
-	vector<string> operators;
+	vector<string> ops; //operator is a c++ keyword
 	vector<string> delimiters;
+	vector<string> identifiers;
+	vector<string> constants;
+
 
 	bool for_loop = false;
 
-	while(!file_input.eof()){
+	while(getline(file_input, temp_line)){
+		cout << temp_line << endl;
 
-		file_input >> temp;
+		if(has_uppercase(temp_line)) { // all lowercase
+			string temp_word;
 
-		if(temp.compare("FOR") == 0){
-			main_stack.push("FOR");
-			for_loop = true;
+			istringstream iss(temp_line);
+			iss >> temp_word;
 
-			string indices;
-			getline(file_input, indices);
 
-			remove_from_string(indices, " ");
+			if(temp_word.compare("FOR") == 0){
+				main_stack.push("FOR");
+				current_loop_depth++;
+				for_loop = true;
 
-			bool open_parenthesis = (indices[0] == '(');
-			int length = indices.length();
+				string indices;
+				getline(iss, indices);
 
-			int i;
-			if(open_parenthesis) {
-				i = 1;
-				cout << "NOT MISSING (" << endl;
-			} else {
-				i = 0;
-				if (! is_in_vector(errors, "(")) {
-					errors.push_back("(");
-					cout << "MISSING (" << endl;
+				remove_from_string(indices, " ");
+
+				//Checking for delimiters in the indices
+				if(is_in_string(indices, ',')){
+					push_to_vector(delimiters, ",");
 				}
-			}
 
-			//Checking for delimiters in the indices
-			if(is_in_string(indices, ',')){
-				if(!is_in_vector(delimiters, ",")){
-					delimiters.push_back(",");
+				if(indices[0] != '('){
+					push_to_vector(errors, "(");
 				}
-			}
 
-			if (count_in_string(indices, ')') != 1) {
-				if(!is_in_vector(errors, ")")){
-					delimiters.push_back(")");
+				if(indices[indices.length() - 1] != ')'){
+					push_to_vector(errors, ")");
 				}
-			}
 
-			remove_from_string(indices, "()");
+				if (count_in_string(indices, ')') != 1) {
+					push_to_vector(errors, ")");
+				}
 
-			cout << indices;
+				if (count_in_string(indices, '(') != 1) {
+					push_to_vector(errors, "(");
+				}
+
+
+				remove_from_string(indices, "()");
+
+				vector<string> tokens = tokenize_string(indices, ",");
+				string identifier = tokens[0];
+				string constant = tokens[1];
+				string op = tokens[2];
+
+
+				/*for(unsigned int i = 0; i != identifiers.size(); i++) {
+	    			cout << "VECTOR DEMO: " << identifiers[i] << endl;
+				}*/
+
+			} 
+
+		} else {
+			//doesn't have uppercase
+
 		}
 
+
 	}
-
 	file_input.close();
-
 	return 0;
 }
