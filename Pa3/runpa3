@@ -1,4 +1,4 @@
 #!/bin/bash
 
-g++ Pa3.cpp -o Pa3.o -Wall
-./Pa3.o
+g++ pa3.cpp -o pa3.o -Wall
+./pa3.o

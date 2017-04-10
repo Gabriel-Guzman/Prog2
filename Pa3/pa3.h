@@ -87,3 +87,17 @@ bool has_uppercase (string str) {
 
 	return has_upper;
 }
+
+bool has_digit (string str) {
+	bool has_digit = false;
+	for (unsigned int i  = 0; i < str.length(); i++){
+
+		if (isdigit(str[i])) {
+			has_digit = true;
+
+		}
+	}
+
+	return has_digit;
+
+}
